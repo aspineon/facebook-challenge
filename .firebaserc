@@ -1,0 +1,40 @@
+{
+  "projects": {
+    "default": "facebook-challenge-6053b",
+    "master": "facebook-challenge-6053b",
+    "prod": "facebook-challenge-6053b"
+  },
+  "ci": {
+    "copyVersion": true,
+    "createConfig": {
+      "master": {
+        "env": "staging",
+        "firebase": {
+          "apiKey": "${STG_FIREBASE_API_KEY}",
+          "authDomain": "facebook-challenge-6053b.firebaseapp.com",
+          "databaseURL": "https://facebook-challenge-6053b.firebaseio.com",
+          "projectId": "facebook-challenge-6053b",
+          "storageBucket": "facebook-challenge-6053b.appspot.com",
+          "messagingSenderId": "1033728210093"
+        },
+        "sentryDsn": "${SENTRY_DSN}",
+        "analyticsTrackingId": "${GA_TRACKING_ID}",
+        "publicVapidKey": "${STG_PUBLIC_VAPID_KEY}"
+      },
+      "prod": {
+        "env": "production",
+        "firebase": {
+          "apiKey": "${PROD_FIREBASE_API_KEY}",
+          "authDomain": "facebook-challenge-6053b.firebaseapp.com",
+          "databaseURL": "https://facebook-challenge-6053b.firebaseio.com",
+          "projectId": "facebook-challenge-6053b",
+          "storageBucket": "facebook-challenge-6053b.appspot.com",
+          "messagingSenderId": "1033728210093"
+        },
+        "sentryDsn": "${SENTRY_DSN}",
+        "analyticsTrackingId": "${GA_TRACKING_ID}",
+        "publicVapidKey": "${PROD_PUBLIC_VAPID_KEY}"
+      }
+    }
+  }
+}
