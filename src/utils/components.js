@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { pick, some, get } from 'lodash'
+import { pick, some } from 'lodash'
 import { isLoaded, isEmpty } from 'react-redux-firebase'
 import LoadableComponent from 'react-loadable'
 import { mapProps, branch, renderComponent } from 'recompose'

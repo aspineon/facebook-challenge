@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import PostBuilder from 'containers/PostBuilder'
 import Post from 'containers/Post'
 import Button from '@material-ui/core/Button'
-import InfiniteScroll from 'react-infinite-scroller'
+// import InfiniteScroll from 'react-infinite-scroller'
 
 const Home = ({
   posts,

@@ -52,7 +52,7 @@ jobs:
 workflows:
   version: 2.1
 
-  g2g:
+  facebook-challenge:
     jobs:
       - building
       - deploying:
