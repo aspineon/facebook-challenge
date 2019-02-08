@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import styles from './Post.styles'
+import styles from './PostCard.styles'
 import {
   compose,
   setDisplayName,
@@ -15,7 +15,6 @@ export default compose(
   withNotifications,
   setPropTypes({
     post: PropTypes.shape({
-      id: PropTypes.string.isRequired,
       message: PropTypes.string.isRequired,
       scope: PropTypes.string.isRequired
     }),

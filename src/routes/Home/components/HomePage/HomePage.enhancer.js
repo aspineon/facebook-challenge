@@ -3,68 +3,59 @@ import {
   compose,
   withHandlers,
   setDisplayName,
-  withStateHandlers,
-  lifecycle
+  withStateHandlers
 } from 'recompose'
-import { withFirestore } from 'react-redux-firebase'
+import { firestoreConnect, isLoaded } from 'react-redux-firebase'
 import { UserIsAuthenticated } from 'utils/router'
 import { spinnerWhileLoading } from 'utils/components'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './HomePage.styles'
 
 const collection = 'posts'
-const limit = 5
 const orderBy = ['createdAt', 'desc']
+const limit = 10
 const populates = [{ child: 'createdBy', root: 'users' }]
 
 export default compose(
   setDisplayName('EnhancedHomePage'),
   UserIsAuthenticated,
-  withFirestore,
   withStateHandlers(
     () => ({
       selectedScopeFilter: null,
-      hasMorePosts: false,
-      loadingPosts: true,
       loadedPosts: []
     }),
     {
       setSelectedScopeFilter: () => selectedScopeFilter => ({
         selectedScopeFilter
-      }),
-      setHasMorePosts: () => hasMorePosts => ({
-        hasMorePosts
-      }),
-      setLoadingPosts: () => loadingPosts => ({
-        loadingPosts
       })
     }
   ),
-  lifecycle({
-    async componentDidMount() {
-      try {
-        await this.props.firestore.setListener({
-          collection,
-          orderBy,
-          limit,
-          populates
-        })
-
-        this.props.setLoadingPosts(false)
-      } catch (error) {
-        console.log(error.message || error) // eslint-disable-line no-console
-      }
+  firestoreConnect(props => [
+    {
+      collection,
+      orderBy,
+      limit,
+      populates
     }
-  }),
+  ]),
   // Map posts from state to props
-  connect((state, props) => {
+  connect(state => {
     const posts = state.firestore.ordered[collection]
+    const postsWithCreators =
+      (posts &&
+        state.firestore.data.users &&
+        posts.map(post => ({
+          ...post,
+          createdBy: state.firestore.data.users[post.createdBy]
+        }))) ||
+      undefined
+    const hasMorePosts = (posts && posts.length > limit - 1) || false
 
-    if (!props.hasMorePosts && posts && posts.length > limit - 1) {
-      props.setHasMorePosts(true)
+    return {
+      posts: postsWithCreators,
+      hasMorePosts,
+      loadingPosts: isLoaded(posts)
     }
-
-    return { posts }
   }),
   // Show loading spinner while posts are loading
   spinnerWhileLoading(['posts']),
@@ -112,14 +103,12 @@ export default compose(
     getNextPosts: ({
       firestore,
       posts,
-      setHasMorePosts,
-      hasMorePosts,
       loadingPosts,
       setLoadingPosts
     }) => async () => {
       const lastPost = posts && posts[posts.length - 1]
 
-      if (!lastPost || !hasMorePosts || loadingPosts) {
+      if (!lastPost || loadingPosts) {
         console.log('No more posts') // eslint-disable-line no-console
         return null
       }
@@ -132,17 +121,13 @@ export default compose(
           .doc(lastPost.id)
           .get()
 
-        const next = await firestore.get({
+        await firestore.get({
           collection,
           orderBy,
-          limit,
+          // limit,
           startAfter,
           populates
         })
-
-        if (next && next.docs && next.docs.length <= limit - 1) {
-          setHasMorePosts(false)
-        }
       } catch (error) {
         console.log(error.message || error) // eslint-disable-line no-console
       }

@@ -4,7 +4,8 @@ export default theme => ({
     width: '80vw',
     minWidth: '300px',
     maxWidth: '500px',
-    minHeight: '50px'
+    minHeight: '50px',
+    padding: '0.5rem'
   },
   messageInput: {
     marginBottom: '0.8rem'
