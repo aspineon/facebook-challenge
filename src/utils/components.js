@@ -1,20 +1,20 @@
 /* eslint-disable no-console */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { pick, some } from 'lodash'
-import { isLoaded } from 'react-redux-firebase'
+import { pick, some, get } from 'lodash'
+import { isLoaded, isEmpty } from 'react-redux-firebase'
 import LoadableComponent from 'react-loadable'
 import { mapProps, branch, renderComponent } from 'recompose'
 import LoadingSpinner from 'components/LoadingSpinner'
 
 /**
- * Show a loading spinner when a condition is truthy. Used within
- * spinnerWhileLoading. Accepts a test function and a higher-order component.
+ * Show a component while condition is true.
+ *
  * @param  {Function} condition - Condition function for when to show spinner
  * @return {HigherOrderComponent}
  */
-export const spinnerWhile = condition =>
-  branch(condition, renderComponent(LoadingSpinner))
+export const renderWhile = (condition, component) =>
+  branch(condition, renderComponent(component))
 
 /**
  * Show a loading spinner while props are loading . Checks
@@ -38,7 +38,20 @@ export const spinnerWhile = condition =>
  * @return {HigherOrderComponent}
  */
 export const spinnerWhileLoading = propNames =>
-  spinnerWhile(props => some(propNames, name => !isLoaded(props[name])))
+  renderWhile(
+    props => some(propNames, name => !isLoaded(props[name])),
+    LoadingSpinner
+  )
+
+// HOC that shows a component while any of a list of props isEmpty
+export const renderIfEmpty = (propsNames, component) => {
+  return renderWhile(
+    // Any of the listed prop name correspond to empty props (supporting dot path names)
+    props =>
+      some(propsNames, name => isLoaded(props[name]) && isEmpty(props[name])),
+    component
+  )
+}
 
 /**
  * HOC that logs props using console.log. Accepts an array list of prop names

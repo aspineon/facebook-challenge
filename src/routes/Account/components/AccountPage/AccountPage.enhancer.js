@@ -28,9 +28,9 @@ export default compose(
     updateAccount: ({ firebase, showSuccess, showError }) => newAccount =>
       firebase
         .updateProfile(newAccount)
-        .then(() => showSuccess('Profile updated successfully'))
+        .then(() => showSuccess('Perfíl actualizado con éxito'))
         .catch(error => {
-          showError('Error updating profile: ', error.message || error)
+          showError('Error actualizando perfíl: ', error.message || error)
           console.error('Error updating profile', error.message || error) // eslint-disable-line no-console
           return Promise.reject(error)
         })

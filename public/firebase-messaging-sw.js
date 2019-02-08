@@ -6,12 +6,12 @@
 importScripts('https://www.gstatic.com/firebasejs/5.4.1/firebase-app.js')
 importScripts('https://www.gstatic.com/firebasejs/5.4.1/firebase-messaging.js')
 
-const PROD_MESSAGING_ID = '1033728210093'
-const STAGE_MESSAGING_ID = '' // TODO: Set your staging messaging ID here
+const PROD_MESSAGING_ID = '984979739479'
+const STAGE_MESSAGING_ID = '984979739479' // TODO: Set your staging messaging ID here
 /* eslint-disable prettier/prettier */
 firebase.initializeApp({
   // Use prod id if stage id not defined or running on prod Firebase hosting
-  messagingSenderId: !STAGE_MESSAGING_ID || self.location.hostname.includes('g2g-app-72a17')
+  messagingSenderId: !STAGE_MESSAGING_ID || self.location.hostname.includes('facebook-challenge-6053b')
     ? PROD_MESSAGING_ID
     : STAGE_MESSAGING_ID
 })
@@ -27,7 +27,7 @@ messaging.setBackgroundMessageHandler(function (payload) {
   )
   
   // Customize default notification here
-  const notificationTitle = 'G2g'
+  const notificationTitle = 'Facebook Challenge'
   const notificationOptions = {
     body: 'Background Message body.',
     icon: '/firebase-logo.png'

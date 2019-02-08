@@ -4,7 +4,6 @@ import CoreLayout from '../layouts/CoreLayout'
 import Home from './Home'
 import LoginRoute from './Login'
 import SignupRoute from './Signup'
-import OfferRoute from './Offer'
 import AccountRoute from './Account'
 import NotFoundRoute from './NotFound'
 
@@ -16,7 +15,6 @@ export default function createRoutes(store) {
         {/* Build Route components from routeSettings */
         [
           AccountRoute,
-          OfferRoute,
           SignupRoute,
           LoginRoute
           /* Add More Routes Here */

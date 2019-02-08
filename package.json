@@ -1,7 +1,7 @@
 {
-  "name": "g2g",
+  "name": "facebook-challenge",
   "version": "0.0.0-dev",
-  "description": "Marketplace for gamer-to-gamer trades of digital goods",
+  "description": "challenged by Laboratoria.la",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/raulingg/g2g.git"
+    "url": "https://github.com/raulingg/facebook-challenge.git"
   },
   "engines": {
     "node": ">=8.11.0"
@@ -48,6 +48,7 @@
     "react-ga": "^2.3.5",
     "react-google-button": "^0.5.3",
     "react-image-crop": "^6.0.12",
+    "react-infinite-scroller": "^1.2.4",
     "react-loadable": "^5.5.0",
     "react-redux": "^5.0.7",
     "react-redux-firebase": "^2.1.9",
@@ -55,7 +56,7 @@
     "recompose": "^0.30.0",
     "redux": "^4.0.0",
     "redux-auth-wrapper": "^2.0.3",
-    "redux-firestore": "^0.6.0",
+    "redux-firestore": "^0.6.3",
     "redux-thunk": "^2.2.0",
     "yup": "^0.26.7"
   },

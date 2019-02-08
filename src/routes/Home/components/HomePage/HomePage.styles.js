@@ -1,8 +1,18 @@
 export default theme => ({
   root: {
-    ...theme.flexColumnCenter
+    display: 'flex',
+    flexDirection: 'column'
   },
   section: {
-    ...theme.flexColumnCenter
+    ...theme.flexRowCenter
+  },
+  title: {
+    marginBottom: '3rem'
+  },
+  actionButtons: {
+    width: '80vw',
+    minWidth: '300px',
+    maxWidth: '500px',
+    marginBottom: '1.5rem'
   }
 })

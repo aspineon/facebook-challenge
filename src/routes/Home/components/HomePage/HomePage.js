@@ -1,98 +1,75 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
-import {
-  ACCOUNT_PATH,
-  LIST_PATH,
-  LOGIN_PATH,
-  SIGNUP_PATH
-} from 'constants/paths'
+import PostBuilder from 'containers/PostBuilder'
+import Post from 'containers/Post'
+import Button from '@material-ui/core/Button'
+import InfiniteScroll from 'react-infinite-scroller'
 
-const authWrapperUrl = 'https://github.com/mjrussell/redux-auth-wrapper'
-const reactRouterUrl = 'https://github.com/ReactTraining/react-router'
-
-const Home = ({ classes }) => (
+const Home = ({
+  posts,
+  selectedScopeFilter,
+  loadingPosts,
+  hasMorePosts,
+  getAllPostsByScope,
+  getNextPosts,
+  deletePost,
+  classes
+}) => (
   <div className={classes.root}>
-    <div className="flex-row-center">
-      <h2>Home Route</h2>
+    <div className={classes.section}>
+      <h2 className={classes.title}>Facebook Challenge</h2>
     </div>
-    <div className="flex-row-center">
-      <div className={classes.section}>
-        <h3>Routing</h3>
-        <span>
-          Redirecting and route protection done using:
-          <div>
-            <span>
-              <a
-                href={reactRouterUrl}
-                target="_blank"
-                rel="noopener noreferrer">
-                react-router
-              </a>
-            </span>
-            <span> and </span>
-            <a href={authWrapperUrl} target="_blank" rel="noopener noreferrer">
-              redux-auth-wrapper
-            </a>
+    <div className={classes.section}>
+      <PostBuilder />
+    </div>
+    <div className={classes.section}>
+      <div className={classes.actionButtons}>
+        <Button
+          color="primary"
+          onClick={() => getAllPostsByScope('FRIENDS')}
+          disabled={selectedScopeFilter === 'FRIENDS'}>
+          Amigos
+        </Button>
+        <Button
+          color="primary"
+          onClick={() => getAllPostsByScope('PUBLIC')}
+          disabled={selectedScopeFilter === 'PUBLIC'}>
+          Público
+        </Button>
+      </div>
+    </div>
+
+    {/* <InfiniteScroll
+        pageStart={0}
+        hasMore={hasMorePosts && !loadingPosts}
+        initialLoad={false}
+        loadMore={getNextPosts}
+        threshold={50}>
+        {loadingPosts ? (
+          <div className="loader" key="loading">
+            Cargando ...
           </div>
-        </span>
-      </div>
-      <div className={classes.section}>
-        <h4>Logged Out</h4>
-        <span>
-          User is redirected to <pre>/login</pre> if not authenticated and
-          trying to vist:
-        </span>
-        <ul>
-          <li>
-            <Link to={LIST_PATH}>Projects</Link>
-          </li>
-          <li>
-            <Link to={ACCOUNT_PATH}>Account</Link>
-          </li>
-        </ul>
-      </div>
-      <div className={classes.section}>
-        <h4>Logged In</h4>
-        <span>
-          User is redirected to <pre>/projects</pre> if authenticated and trying
-          to vist:
-        </span>
-        <ul>
-          <li>
-            <Link to={LOGIN_PATH}>Login</Link>
-          </li>
-          <li>
-            <Link to={SIGNUP_PATH}>Signup</Link>
-          </li>
-        </ul>
-      </div>
-      <div className={classes.section}>
-        <div>
-          <h4>Forms</h4>
-          <span>Redirecting and route protection done using:</span>
-          <div>
-            <span>
-              <a
-                href={reactRouterUrl}
-                target="_blank"
-                rel="noopener noreferrer">
-                redux-form
-              </a>
-            </span>
-          </div>
+        ) : null} */}
+    {posts &&
+      posts.map(post => (
+        <div className={classes.section} key={`post-${post.id}`}>
+          <Post post={post} onDelete={deletePost} />
         </div>
-        <span>The following routes use redux-form:</span>
-        <Link to={ACCOUNT_PATH}>
-          <p>Account Page</p>
-        </Link>
-      </div>
-    </div>
+      ))}
+    {/* </InfiniteScroll> */}
   </div>
 )
 
 Home.proptypes = {
-  classes: PropTypes.object.isRequired // from enhancer (withStyles)
+  posts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      message: PropTypes.string,
+      scope: PropTypes.string
+    })
+  ).isRequired,
+  deletePost: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired
 }
 
 export default Home

@@ -13,7 +13,7 @@ const LoginPage = ({ loginWithCredentials, googleLogin, classes }) => (
     </Paper>
     <div className={classes.orLabel}>or</div>
     <div className={classes.providers}>
-      <GoogleButton onClick={googleLogin} />
+      <GoogleButton label="Login con Google" onClick={googleLogin} />
     </div>
     <div className={classes.signup}>
       <span className={classes.signupLabel}>Need an account?</span>
