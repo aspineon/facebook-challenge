@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/raulingg/facebook-challenge/compare/v1.1.0...v1.1.1) (2019-02-08)
+
+
+### Bug Fixes
+
+* **PostCard.js, HomePage.enhancer.js:** Hide post card's action button when authenticated user isn't ([aeef8b2](https://github.com/raulingg/facebook-challenge/commit/aeef8b2)), closes [#5](https://github.com/raulingg/facebook-challenge/issues/5)
+
 # [1.1.0](https://github.com/raulingg/facebook-challenge/compare/v1.0.0...v1.1.0) (2019-02-08)
 
 
