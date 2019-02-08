@@ -19,6 +19,41 @@ const populates = [{ child: 'createdBy', root: 'users' }]
 export default compose(
   setDisplayName('EnhancedHomePage'),
   UserIsAuthenticated,
+  // Map auth uid from state to props
+  connect(({ firebase: { auth: { uid } } }) => ({ uid })),
+  // Wait for uid to exist before going further
+  spinnerWhileLoading(['uid']),
+  firestoreConnect(props => [
+    {
+      collection,
+      orderBy,
+      limit,
+      populates
+    }
+  ]),
+  connect(({ firestore }, { uid }) => {
+    const {
+      ordered,
+      data: { users }
+    } = firestore
+    const posts = ordered[collection]
+    const postsWithCreators =
+      posts &&
+      posts.map(post => ({
+        ...post,
+        createdBy: users[post.createdBy],
+        isAuthUserOwner: uid === post.createdBy
+      }))
+    const hasMorePosts = (posts && posts.length > limit - 1) || false
+
+    return {
+      posts: postsWithCreators,
+      hasMorePosts,
+      loadingPosts: isLoaded(posts)
+    }
+  }),
+  // Show loading spinner while posts are loading
+  spinnerWhileLoading(['posts']),
   withStateHandlers(
     () => ({
       selectedScopeFilter: null,
@@ -30,35 +65,6 @@ export default compose(
       })
     }
   ),
-  firestoreConnect(props => [
-    {
-      collection,
-      orderBy,
-      limit,
-      populates
-    }
-  ]),
-  // Map posts from state to props
-  connect(state => {
-    const posts = state.firestore.ordered[collection]
-    const postsWithCreators =
-      (posts &&
-        state.firestore.data.users &&
-        posts.map(post => ({
-          ...post,
-          createdBy: state.firestore.data.users[post.createdBy]
-        }))) ||
-      undefined
-    const hasMorePosts = (posts && posts.length > limit - 1) || false
-
-    return {
-      posts: postsWithCreators,
-      hasMorePosts,
-      loadingPosts: isLoaded(posts)
-    }
-  }),
-  // Show loading spinner while posts are loading
-  spinnerWhileLoading(['posts']),
   withHandlers({
     deletePost: ({ firestore }) => async id => {
       if (!id) {

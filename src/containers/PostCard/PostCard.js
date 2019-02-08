@@ -51,22 +51,24 @@ const PostCard = ({
         </CardContent>
       </Fragment>
     )}
-    <CardActions className={classes.actions} disableActionSpacing>
-      <Button
-        color="primary"
-        onClick={handleEnabledEditing}
-        className={classes.buttonLink}
-        hidden={editing}>
-        Editar
-      </Button>
-      <Button
-        color="primary"
-        onClick={handleOpenDialog}
-        disabled={deleteDialogOpen}
-        className={classes.buttonLink}>
-        Eliminar
-      </Button>
-    </CardActions>
+    {post.isAuthUserOwner && (
+      <CardActions className={classes.actions} disableActionSpacing>
+        <Button
+          color="primary"
+          onClick={handleEnabledEditing}
+          className={classes.buttonLink}
+          hidden={editing}>
+          Editar
+        </Button>
+        <Button
+          color="primary"
+          onClick={handleOpenDialog}
+          disabled={deleteDialogOpen}
+          className={classes.buttonLink}>
+          Eliminar
+        </Button>
+      </CardActions>
+    )}
     {deleteDialogOpen && (
       <Dialog
         open={deleteDialogOpen}
