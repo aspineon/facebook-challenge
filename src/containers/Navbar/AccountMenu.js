@@ -37,8 +37,8 @@ const AccountMenu = ({
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={Boolean(anchorEl)}
       onClose={closeAccountMenu}>
-      <MenuItem onClick={goToAccount}>Account</MenuItem>
-      <MenuItem onClick={onLogoutClick}>Sign Out</MenuItem>
+      <MenuItem onClick={goToAccount}>Mi cuenta</MenuItem>
+      <MenuItem onClick={onLogoutClick}>Salir</MenuItem>
     </Menu>
   </div>
 )

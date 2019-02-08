@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
 import PostBuilder from 'containers/PostBuilder'
@@ -6,8 +6,15 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
+import CardHeader from '@material-ui/core/CardHeader'
+import Avatar from '@material-ui/core/Avatar'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
+import CardActions from '@material-ui/core/CardActions'
+import Card from '@material-ui/core/Card'
+import defaultUserImageUrl from 'static/User.png'
 
-const Post = ({
+const PostCard = ({
   post,
   editing,
   deleting,
@@ -19,13 +26,32 @@ const Post = ({
   handleOpenDialog,
   classes
 }) => (
-  <div className={classes.root}>
+  <Card className={classes.root}>
     {editing ? (
       <PostBuilder post={post} onClose={handleDisabledEditing} />
     ) : (
-      <div className={classes.message}>{post.message}</div>
+      <Fragment>
+        <CardHeader
+          avatar={
+            <Avatar
+              label={post.createdBy.displayName || post.createdBy.username}
+              className={classes.bigAvatar}
+              src={post.createdBy.avatarUrl || defaultUserImageUrl}
+            />
+          }
+          title={post.createdBy.displayName || post.createdBy.username}
+          subheader={
+            (post.createdAt && post.createdAt.toDate().toLocaleString()) || ''
+          }
+        />
+        <CardContent>
+          <Typography component="p" className={classes.message}>
+            {post.message}
+          </Typography>
+        </CardContent>
+      </Fragment>
     )}
-    <div className={classes.actionButtons}>
+    <CardActions className={classes.actions} disableActionSpacing>
       <Button
         color="primary"
         onClick={handleEnabledEditing}
@@ -40,7 +66,7 @@ const Post = ({
         className={classes.buttonLink}>
         Eliminar
       </Button>
-    </div>
+    </CardActions>
     {deleteDialogOpen && (
       <Dialog
         open={deleteDialogOpen}
@@ -50,7 +76,7 @@ const Post = ({
         aria-labelledby="confirmation-dialog-title">
         <DialogTitle id="confirmation-dialog-title">Eliminar post</DialogTitle>
         <DialogContent>
-          ¿Estas seguro de que quieres eliminar este post?
+          ¿Estás seguro que quieres eliminar este post?
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogCancel} disabled={deleting}>
@@ -62,12 +88,19 @@ const Post = ({
         </DialogActions>
       </Dialog>
     )}
-  </div>
+  </Card>
 )
 
-Post.proptypes = {
+PostCard.proptypes = {
+  editing: PropTypes.bool.isRequired,
+  deleting: PropTypes.bool.isRequired,
+  deleteDialogOpen: PropTypes.bool.isRequired,
+  handleEnabledEditing: PropTypes.func.isRequired,
+  handleDisabledEditing: PropTypes.func.isRequired,
+  handleOpenDialog: PropTypes.func.isRequired,
   handleDialogOk: PropTypes.func.isRequired,
+  handleDialogCancel: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired
 }
 
-export default Post
+export default PostCard

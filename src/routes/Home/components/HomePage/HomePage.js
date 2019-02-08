@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PostBuilder from 'containers/PostBuilder'
-import Post from 'containers/Post'
+import PostCard from 'containers/PostCard'
 import Button from '@material-ui/core/Button'
 // import InfiniteScroll from 'react-infinite-scroller'
 
@@ -53,7 +53,7 @@ const Home = ({
     {posts &&
       posts.map(post => (
         <div className={classes.section} key={`post-${post.id}`}>
-          <Post post={post} onDelete={deletePost} />
+          <PostCard post={post} onDelete={deletePost} />
         </div>
       ))}
     {/* </InfiniteScroll> */}

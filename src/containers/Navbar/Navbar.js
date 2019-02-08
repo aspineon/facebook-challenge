@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import { ACCOUNT_PATH } from 'constants/paths'
 import AccountMenu from './AccountMenu'
 import LoginMenu from './LoginMenu'
 
@@ -26,8 +25,8 @@ export const Navbar = ({
         color="inherit"
         className={classes.flex}
         component={Link}
-        to={authExists ? ACCOUNT_PATH : '/'}>
-        g2g
+        to="/">
+        Facebook Challenge
       </Typography>
       {authExists ? (
         <AccountMenu

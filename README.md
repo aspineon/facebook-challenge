@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <a href="https://circleci.com/gh/raulingg/g2g/tree/master"><img alt="CircleCI" src="https://circleci.com/gh/raulingg/g2g/tree/master.svg?style=svg"></a>
+  <a href="https://circleci.com/gh/raulingg/facebook-challenge/tree/master"><img alt="CircleCI" src="https://circleci.com/gh/raulingg/facebook-challenge/tree/master.svg?style=svg&circle-token=c77f3348374e495786e654149825de8fdcea0636"></a>
   <a href="http://commitizen.github.io/cz-cli/"><img alt="Commitizen" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"></a>
   <a href="https://github.com/semantic-release/semantic-release"><img alt="Semantic Release" src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg"></a>
   <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
