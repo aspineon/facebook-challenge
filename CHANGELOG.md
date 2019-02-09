@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/raulingg/facebook-challenge/compare/v1.1.1...v1.2.0) (2019-02-09)
+
+
+### Features
+
+* Add image to post builder form. ([db534ac](https://github.com/raulingg/facebook-challenge/commit/db534ac)), closes [#6](https://github.com/raulingg/facebook-challenge/issues/6)
+
 ## [1.1.1](https://github.com/raulingg/facebook-challenge/compare/v1.1.0...v1.1.1) (2019-02-08)
 
 
