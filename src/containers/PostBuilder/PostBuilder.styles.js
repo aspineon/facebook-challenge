@@ -17,7 +17,11 @@ export default theme => ({
   },
   fieldsInverted: {
     display: 'flex',
-    flexDirection: 'column-reverse'
+    flexDirection: 'column-reverse',
+    width: '100%',
+    '& textarea::before': {
+      border: 'none'
+    }
   },
   scopeInput: {
     marginRight: '0.5rem'
