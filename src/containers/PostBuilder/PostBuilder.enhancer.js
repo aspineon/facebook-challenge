@@ -9,6 +9,9 @@ import { UserIsAuthenticated } from 'utils/router'
 import styles from './PostBuilder.styles'
 import { withFormik } from 'formik'
 import * as Yup from 'yup'
+import { connect } from 'react-redux'
+import cuid from 'cuid'
+import { deleteImage } from 'modules/imageCropper/actions'
 
 const validationSchema = Yup.object({
   message: Yup.string().required(),
@@ -23,6 +26,12 @@ export default compose(
   withNotifications,
   withFirebase,
   withFirestore,
+  connect(
+    ({ imageCropper }) => ({
+      photos: imageCropper
+    }),
+    { deleteImage }
+  ),
   setPropTypes({
     showError: PropTypes.func.isRequired,
     showSuccess: PropTypes.func.isRequired,
@@ -44,40 +53,81 @@ export default compose(
       {
         setSubmitting,
         resetForm,
-        props: { post, firebase, firestore, showSuccess, showError, onClose }
+        props: {
+          post,
+          firebase,
+          firestore,
+          photos,
+          deleteImage,
+          showSuccess,
+          showError,
+          onClose
+        }
       }
     ) => {
       const user = firebase.auth().currentUser
 
-      try {
-        if (post) {
-          await firestore.update(
-            { collection: 'posts', doc: post.id },
+      if (!user || !user.uid) {
+        console.log('Debes ingresar a tu cuenta antes de crear una oferta') // eslint-disable-line no-console
+
+        return
+      }
+
+      let imageUrl
+
+      if (photos.length > 0) {
+        const photoName = cuid()
+        const path = `${user.uid}/photos`
+
+        try {
+          const uploadedFile = await firebase.uploadFile(
+            path,
+            photos[0].croppedBlob,
+            null,
             {
-              ...values,
-              updateddAt: firestore.FieldValue.serverTimestamp()
+              name: photoName
             }
           )
+          imageUrl = await uploadedFile.uploadTaskSnapshot.ref.getDownloadURL()
+        } catch (error) {
+          showError('Error al subir imagen:', error.message || error)
+          console.error('Error', error.message || error) // eslint-disable-line no-console
+          throw error
+        }
+      }
+
+      let data = {
+        ...values,
+        updatedAt: firestore.FieldValue.serverTimestamp()
+      }
+
+      data = imageUrl ? { ...data, imageUrl } : data
+
+      try {
+        if (post) {
+          await firestore.update({ collection: 'posts', doc: post.id }, data)
           showSuccess('Post actualizado!')
           onClose()
           return
         } else {
-          await firestore.add(
-            { collection: 'posts' },
-            {
-              ...values,
-              createdBy: user.uid,
-              createdAt: firestore.FieldValue.serverTimestamp()
-            }
-          )
+          data = {
+            ...data,
+            createdBy: user.uid,
+            createdAt: firestore.FieldValue.serverTimestamp()
+          }
+          await firestore.add({ collection: 'posts' }, data)
           showSuccess('Post creado!')
+          resetForm(initialValues)
+        }
+
+        if (imageUrl) {
+          deleteImage()
         }
       } catch (error) {
-        console.error('Error', error.message || error) // eslint-disable-line no-console
         showError('Error guardando post:', error.message || error)
+        console.error('Error', error.message || error) // eslint-disable-line no-console
       }
 
-      resetForm(initialValues)
       setSubmitting(false)
     },
     validateOnChange: false,

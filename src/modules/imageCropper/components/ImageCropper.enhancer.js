@@ -22,6 +22,7 @@ export default compose(
     photos: PropTypes.array.isRequired,
     addImage: PropTypes.func.isRequired,
     updateImage: PropTypes.func.isRequired,
+    deleteImage: PropTypes.func.isRequired,
     showSuccess: PropTypes.func.isRequired,
     showError: PropTypes.func.isRequired
   }),
@@ -35,7 +36,6 @@ export default compose(
         x: 0,
         y: 0
       },
-      croppedPhotoUrls: [],
       cropperDialogOpen: false,
       fullPhotoDialogOpen: false,
       selectedPhotoIndex: 0,
@@ -131,14 +131,15 @@ export default compose(
         showSuccess('Foto recortada!')
       }
     },
-    editPhoto: ({
-      setCropperDialogOpenAndselectedPhotoIndex
-    }) => photoIndex => () =>
+    editPhoto: ({ setCropperDialogOpenAndselectedPhotoIndex }) => photoIndex =>
       setCropperDialogOpenAndselectedPhotoIndex(photoIndex),
+    deletePhoto: ({ deleteImage, photos }) => photoIndex => {
+      window.URL.revokeObjectURL(photos[photoIndex].croppedUrl)
+      deleteImage(photoIndex)
+    },
     showFullPhoto: ({
       setFullPhotoDialogOpenAndselectedPhotoIndex
-    }) => photoIndex => () =>
-      setFullPhotoDialogOpenAndselectedPhotoIndex(photoIndex),
+    }) => photoIndex => setFullPhotoDialogOpenAndselectedPhotoIndex(photoIndex),
     closeCropperDialog: ({ setCropperDialogOpen }) => () =>
       setCropperDialogOpen(false),
     closeFullPhotoDialog: ({ setFullPhotoDialogOpen }) => () =>

@@ -7,13 +7,23 @@ export default theme => ({
     minHeight: '50px',
     padding: '0.5rem'
   },
-  messageInput: {
-    marginBottom: '0.8rem'
+  fields: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    '& textarea::before': {
+      border: 'none'
+    }
+  },
+  fieldsInverted: {
+    display: 'flex',
+    flexDirection: 'column-reverse'
   },
   scopeInput: {
     marginRight: '0.5rem'
   },
   filterAndAction: {
+    marginTop: '1rem',
     alignSelf: 'flex-end'
   }
 })
