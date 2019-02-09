@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
+import ClearIcon from '@material-ui/icons/Clear'
 import CropIcon from '@material-ui/icons/Crop'
 import DoneIcon from '@material-ui/icons/Done'
 import Dialog from '@material-ui/core/Dialog'
@@ -8,6 +8,8 @@ import CardMedia from '@material-ui/core/CardMedia'
 import IconButton from '@material-ui/core/IconButton'
 import Dropzone from 'react-dropzone'
 import Cropper from 'react-image-crop'
+import Typography from '@material-ui/core/Typography'
+import Fab from '@material-ui/core/Fab'
 import 'react-image-crop/dist/ReactCrop.css'
 
 const ImageCropper = ({
@@ -26,104 +28,116 @@ const ImageCropper = ({
   cropPhoto,
   showFullPhoto,
   editPhoto,
+  deletePhoto,
   closeCropperDialog,
   closeFullPhotoDialog,
   classes
 }) => (
-  <div>
-    <div className={classes.cropperContainer}>
-      <Dropzone
-        onDrop={onDrop}
-        multiple={false}
-        accept="image/jpeg, image/png"
-        maxSize={4194304}
-        disabled={photos.length === max}>
-        {({ getRootProps, getInputProps, isDragActive }) => {
-          return (
-            <div {...getRootProps()} className={classes.dropzone}>
-              <CloudUploadIcon
-                className={classes.cloudUploadIcon}
-                color={photos.length === max ? 'disabled' : 'primary'}
-              />
-              <input {...getInputProps()} />
-              {photos.length === max ? (
-                <p>Has alcanzado el máximo número de fotos permitidas.</p>
-              ) : isDragActive ? (
-                <p>
-                  Intenta arrastrar algunas fotos aquí, o haz clic para
-                  seleccionarlas.
-                </p>
-              ) : (
-                <p>Arrastra tus fotos aquí (Solo png/jpg)</p>
-              )}
-            </div>
-          )
-        }}
-      </Dropzone>
-    </div>
-    <div className={classes.photosContainer}>
-      {photos.map((photo, index) => (
-        <div className={classes.photoItem} key={`cropped-photos-${index}`}>
+  <div className={classes.root}>
+    {photos.length < max && (
+      <div className={classes.cropperContainer}>
+        <Dropzone
+          onDrop={onDrop}
+          multiple={false}
+          accept="image/jpeg, image/png"
+          maxSize={4194304}>
+          {({ getRootProps, getInputProps, isDragActive }) => {
+            return (
+              <div {...getRootProps()} className={classes.dropzone}>
+                <input {...getInputProps()} />
+                {isDragActive ? (
+                  <Typography variant="caption">
+                    Intenta arrastrar algunas fotos aquí, o haz clic para
+                    seleccionarlas.
+                  </Typography>
+                ) : (
+                  <Typography variant="caption">
+                    Arrastra una imagen para publicar (Solo png/jpg)
+                  </Typography>
+                )}
+              </div>
+            )
+          }}
+        </Dropzone>
+      </div>
+    )}
+    {photos.length > 0 && (
+      <div className={classes.photosContainer}>
+        {photos.map((photo, index) => (
+          <div className={classes.photoItem} key={`cropped-photos-${index}`}>
+            <CardMedia
+              component="img"
+              className={classes.photo}
+              image={photo.croppedUrl}
+              onClick={() => showFullPhoto(index)}
+              title="Preview"
+            />
+            <Fab
+              size="small"
+              className={classes.cropFabButton}
+              onClick={() => editPhoto(index)}>
+              <CropIcon />
+            </Fab>
+            <Fab
+              size="small"
+              onClick={() => deletePhoto(index)}
+              className={classes.deleteFabButton}>
+              <ClearIcon />
+            </Fab>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {/* Full Image Dialog starts */}
+    {photos.length > 0 && (
+      <Dialog
+        maxWidth="xl"
+        onClose={closeFullPhotoDialog}
+        open={fullPhotoDialogOpen}
+        aria-labelledby="simple-dialog-title">
+        {Boolean(photos[selectedPhotoIndex]) && (
           <CardMedia
             component="img"
-            className={classes.photo}
-            image={photo.croppedUrl}
-            onClick={showFullPhoto(index)}
-            title="Preview"
+            className={classes.fullPhotoDialog}
+            src={photos[selectedPhotoIndex].croppedUrl}
           />
-          <IconButton
-            variant="contained"
-            onClick={editPhoto(index)}
-            title="Recortar">
-            <CropIcon />
-          </IconButton>
-        </div>
-      ))}
-    </div>
-    {/* Full Photo Dialog */}
-    <Dialog
-      maxWidth="xl"
-      onClose={closeFullPhotoDialog}
-      open={photos.length > 0 && Boolean(fullPhotoDialogOpen)}
-      aria-labelledby="simple-dialog-title">
-      {Boolean(photos[selectedPhotoIndex]) && (
-        <CardMedia
-          component="img"
-          className={classes.fullPhotoDialog}
-          src={photos[selectedPhotoIndex].croppedUrl}
-        />
-      )}
-    </Dialog>
+        )}
+      </Dialog>
+    )}
+    {/* Full image Dialog ends */}
 
-    {/*  Cropper Dialog */}
+    {/* Cropper Dialog starts */}
     <Dialog
       maxWidth="xl"
       onClose={closeCropperDialog}
       open={cropperDialogOpen}
       aria-labelledby="simple-dialog-title">
-      <div className={classes.cropperDialog}>
-        <Cropper
-          className={classes.fullPhotoCard}
-          src={
-            editingPhoto
-              ? photos[selectedPhotoIndex].originalDataUrl
-              : originalDataUrl
-          }
-          crop={crop}
-          keepSelection={true}
-          onImageLoaded={onImageLoaded}
-          onChange={onCropChange}
-        />
-        <IconButton
-          variant="contained"
-          color="primary"
-          onClick={cropPhoto}
-          title="Ok"
-          disabled={disabledCropperButton}>
-          <DoneIcon />
-        </IconButton>
-      </div>
+      {cropperDialogOpen && (
+        <div className={classes.cropperDialog}>
+          <Cropper
+            className={classes.fullPhotoCard}
+            src={
+              (editingPhoto && photos[selectedPhotoIndex].originalDataUrl) ||
+              originalDataUrl
+            }
+            crop={crop}
+            keepSelection={true}
+            onImageLoaded={onImageLoaded}
+            onChange={onCropChange}
+          />
+          <IconButton
+            variant="contained"
+            color="primary"
+            onClick={cropPhoto}
+            title="Ok"
+            disabled={disabledCropperButton}>
+            <DoneIcon />
+          </IconButton>
+        </div>
+      )}
     </Dialog>
+    {/* Cropper Dialog ends */}
   </div>
 )
 

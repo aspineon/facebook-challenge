@@ -11,6 +11,7 @@ import Avatar from '@material-ui/core/Avatar'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import CardActions from '@material-ui/core/CardActions'
+import CardMedia from '@material-ui/core/CardMedia'
 import Card from '@material-ui/core/Card'
 import defaultUserImageUrl from 'static/User.png'
 
@@ -44,6 +45,13 @@ const PostCard = ({
             (post.createdAt && post.createdAt.toDate().toLocaleString()) || ''
           }
         />
+        {post.imageUrl && (
+          <CardMedia
+            component="img"
+            className={classes.media}
+            image={post.imageUrl}
+          />
+        )}
         <CardContent>
           <Typography component="p" className={classes.message}>
             {post.message}

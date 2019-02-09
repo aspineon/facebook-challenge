@@ -2,10 +2,10 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
+import { ImageCropper } from 'modules/imageCropper'
 
 const PostBuilder = ({
   post,
-  name = 'Raul',
   values,
   isValid,
   touched,
@@ -15,22 +15,28 @@ const PostBuilder = ({
   handleBlur,
   handleSubmit,
   onClose,
+  photos,
   classes
 }) => (
   <form onSubmit={handleSubmit} className={classes.form}>
-    <TextField
-      id="message"
-      name="message"
-      placeholder={`¿Qué estás pensando, ${name}?`}
-      value={values.message}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      error={touched.message && Boolean(errors.message)}
-      fullWidth
-      multiline
-      rows={5}
-      className={classes.messageInput}
-    />
+    <div
+      className={photos.length > 0 ? classes.fieldsInverted : classes.fields}>
+      <TextField
+        id="message"
+        name="message"
+        placeholder={
+          photos.length > 0 ? 'Añade un comentario' : '¿Qué estás pensando ?'
+        }
+        value={values.message}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        error={touched.message && Boolean(errors.message)}
+        multiline
+        rowsMax={100}
+        InputProps={{ disableUnderline: true }}
+      />
+      <ImageCropper max={1} />
+    </div>
     <div className={classes.filterAndAction}>
       <TextField
         id="scope"
