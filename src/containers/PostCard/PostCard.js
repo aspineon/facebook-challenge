@@ -1,6 +1,9 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@material-ui/icons/Delete'
 import PostBuilder from 'containers/PostBuilder'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -28,78 +31,90 @@ const PostCard = ({
   classes
 }) => (
   <Card className={classes.root}>
-    {editing ? (
-      <PostBuilder post={post} onClose={handleDisabledEditing} />
-    ) : (
-      <Fragment>
-        <CardHeader
-          avatar={
-            <Avatar
-              label={post.createdBy.displayName || post.createdBy.username}
-              className={classes.bigAvatar}
-              src={post.createdBy.avatarUrl || defaultUserImageUrl}
-            />
-          }
-          title={post.createdBy.displayName || post.createdBy.username}
-          subheader={
-            (post.createdAt && post.createdAt.toDate().toLocaleString()) || ''
-          }
+    <CardHeader
+      avatar={
+        <Avatar
+          label={post.createdBy.displayName || post.createdBy.username}
+          className={classes.bigAvatar}
+          src={post.createdBy.avatarUrl || defaultUserImageUrl}
         />
-        {post.imageUrl && (
-          <CardMedia
-            component="img"
-            className={classes.media}
-            image={post.imageUrl}
-          />
-        )}
-        <CardContent>
-          <Typography component="p" className={classes.message}>
-            {post.message}
-          </Typography>
-        </CardContent>
-      </Fragment>
+      }
+      title={post.createdBy.displayName || post.createdBy.username}
+      subheader={
+        (post.createdAt && post.createdAt.toDate().toLocaleString()) || ''
+      }
+    />
+    {post.imageUrl && (
+      <CardMedia
+        component="img"
+        className={classes.media}
+        image={post.imageUrl}
+      />
+    )}
+    {editing ? (
+      <PostBuilder
+        post={post}
+        onClose={handleDisabledEditing}
+        withImage={false}
+      />
+    ) : (
+      <CardContent>
+        <Typography component="p" className={classes.message}>
+          {post.message}
+        </Typography>
+      </CardContent>
     )}
     {post.isAuthUserOwner && (
-      <CardActions className={classes.actions} disableActionSpacing>
-        <Button
-          color="primary"
-          onClick={handleEnabledEditing}
-          className={classes.buttonLink}
-          hidden={editing}>
-          Editar
-        </Button>
-        <Button
-          color="primary"
-          onClick={handleOpenDialog}
-          disabled={deleteDialogOpen}
-          className={classes.buttonLink}>
-          Eliminar
-        </Button>
-      </CardActions>
-    )}
-    {deleteDialogOpen && (
-      <Dialog
-        open={deleteDialogOpen}
-        disableBackdropClick
-        disableEscapeKeyDown
-        maxWidth="xs"
-        aria-labelledby="confirmation-dialog-title">
-        <DialogTitle id="confirmation-dialog-title">Eliminar post</DialogTitle>
-        <DialogContent>
-          ¿Estás seguro que quieres eliminar este post?
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogCancel} disabled={deleting}>
-            Cancelar
-          </Button>
-          <Button onClick={handleDialogOk} disabled={deleting}>
-            {deleting ? '...Eliminando' : 'Ok'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Fragment>
+        <CardActions className={classes.actions} disableActionSpacing>
+          {!editing && (
+            <IconButton
+              aria-label="Editar post"
+              onClick={handleEnabledEditing}
+              className={classes.buttonLink}
+              hidden={editing}>
+              <EditIcon />
+            </IconButton>
+          )}
+          <IconButton
+            aria-label="Eliminar post"
+            onClick={handleOpenDialog}
+            disabled={deleteDialogOpen}
+            className={classes.buttonLink}>
+            <DeleteIcon />
+          </IconButton>
+        </CardActions>
+        <Dialog
+          open={deleteDialogOpen}
+          disableBackdropClick
+          disableEscapeKeyDown
+          maxWidth="xs"
+          aria-labelledby="confirmation-dialog-title">
+          <DialogTitle id="confirmation-dialog-title">
+            Eliminar post
+          </DialogTitle>
+          <DialogContent>
+            ¿Estás seguro que quieres eliminar este post?
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogCancel} disabled={deleting}>
+              Cancelar
+            </Button>
+            <Button onClick={handleDialogOk} disabled={deleting}>
+              {deleting ? '...Eliminando' : 'Ok'}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Fragment>
     )}
   </Card>
 )
+
+PostBuilder.defaultProps = {
+  editing: false,
+  deleting: false,
+  deleteDialogOpen: false
+}
 
 PostCard.proptypes = {
   editing: PropTypes.bool.isRequired,

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -6,10 +7,11 @@ import { ImageCropper } from 'modules/imageCropper'
 
 const PostBuilder = ({
   post,
+  withImage,
   values,
-  isValid,
   touched,
   errors,
+  isValid,
   isSubmitting,
   handleChange,
   handleBlur,
@@ -20,12 +22,18 @@ const PostBuilder = ({
 }) => (
   <form onSubmit={handleSubmit} className={classes.form}>
     <div
-      className={photos.length > 0 ? classes.fieldsInverted : classes.fields}>
+      className={
+        photos.length > 0 || (post && post.imageUrl)
+          ? classes.fieldsInverted
+          : classes.fields
+      }>
       <TextField
         id="message"
         name="message"
         placeholder={
-          photos.length > 0 ? 'Añade un comentario' : '¿Qué estás pensando ?'
+          photos.length > 0 || (post && post.imageUrl)
+            ? 'Añade un comentario'
+            : '¿Qué estás pensando ?'
         }
         value={values.message}
         onChange={handleChange}
@@ -35,7 +43,7 @@ const PostBuilder = ({
         rowsMax={100}
         InputProps={{ disableUnderline: true }}
       />
-      <ImageCropper max={1} />
+      {withImage && <ImageCropper max={1} />}
     </div>
     <div className={classes.filterAndAction}>
       <TextField
@@ -50,11 +58,7 @@ const PostBuilder = ({
         <MenuItem value="PUBLIC">Público</MenuItem>
         <MenuItem value="FRIENDS">Amigos</MenuItem>
       </TextField>
-      <Button
-        color="primary"
-        type="submit"
-        variant="contained"
-        disabled={!isValid || isSubmitting}>
+      <Button color="primary" type="submit" disabled={!isValid || isSubmitting}>
         {post && post.id
           ? isSubmitting
             ? '...Guardando'
@@ -63,12 +67,20 @@ const PostBuilder = ({
           ? '...Compartiendo'
           : 'Compartir'}
       </Button>
-      {post && (
-        <Button onClick={onClose} variant="contained">
-          Cancelar
-        </Button>
-      )}
+      {post && <Button onClick={onClose}>Cancelar</Button>}
     </div>
   </form>
 )
+
+PostBuilder.defaultProps = {
+  withImage: true,
+  post: undefined
+}
+
+PostBuilder.proptypes = {
+  post: PropTypes.object,
+  withImage: PropTypes.bool,
+  values: PropTypes.object.isRequired
+}
+
 export default PostBuilder
