@@ -44,11 +44,11 @@ const PostCard = ({
         (post.createdAt && post.createdAt.toDate().toLocaleString()) || ''
       }
     />
-    {post.imageUrl && (
+    {post.image && (
       <CardMedia
         component="img"
         className={classes.media}
-        image={post.imageUrl}
+        image={post.image.url}
       />
     )}
     {editing ? (

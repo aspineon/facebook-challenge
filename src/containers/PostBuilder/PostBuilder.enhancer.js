@@ -74,10 +74,11 @@ export default compose(
       }
 
       let imageUrl
+      let data = values
 
       if (photos.length > 0) {
         const photoName = cuid()
-        const path = `${user.uid}/photos`
+        const path = `${user.uid}/postImages`
 
         try {
           const uploadedFile = await firebase.uploadFile(
@@ -88,7 +89,12 @@ export default compose(
               name: photoName
             }
           )
+
           imageUrl = await uploadedFile.uploadTaskSnapshot.ref.getDownloadURL()
+          data = {
+            ...data,
+            image: { url: imageUrl, path: path + '/' + photoName }
+          }
         } catch (error) {
           showError('Error al subir imagen:', error.message || error)
           console.error('Error', error.message || error) // eslint-disable-line no-console
@@ -96,14 +102,9 @@ export default compose(
         }
       }
 
-      let data = {
-        ...values,
-        updatedAt: firestore.FieldValue.serverTimestamp()
-      }
-
-      data = imageUrl ? { ...data, imageUrl } : data
-
       try {
+        data = { ...data, updatedAt: firestore.FieldValue.serverTimestamp() }
+
         if (post) {
           await firestore.update({ collection: 'posts', doc: post.id }, data)
           showSuccess('Post actualizado!')
