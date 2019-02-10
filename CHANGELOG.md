@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/raulingg/facebook-challenge/compare/v1.2.1...v1.2.2) (2019-02-10)
+
+
+### Bug Fixes
+
+* Drop image after post delete ([575e94b](https://github.com/raulingg/facebook-challenge/commit/575e94b)), closes [#13](https://github.com/raulingg/facebook-challenge/issues/13)
+
 ## [1.2.1](https://github.com/raulingg/facebook-challenge/compare/v1.2.0...v1.2.1) (2019-02-10)
 
 
