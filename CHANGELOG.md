@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/raulingg/facebook-challenge/compare/v1.2.0...v1.2.1) (2019-02-10)
+
+
+### Bug Fixes
+
+* Show image saved when user edits a post. ([59a72b6](https://github.com/raulingg/facebook-challenge/commit/59a72b6)), closes [#12](https://github.com/raulingg/facebook-challenge/issues/12)
+
 # [1.2.0](https://github.com/raulingg/facebook-challenge/compare/v1.1.1...v1.2.0) (2019-02-09)
 
 
