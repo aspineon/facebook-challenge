@@ -45,6 +45,9 @@ jobs:
             - build-cache-v1-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             # fallback to using the latest cache if no exact match is found
             - build-cache-v1-
+      - run:
+          name: Avoid hosts unknown for github
+          command: mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
       - run: npx semantic-release
       - run: yarn add firebase-ci@^0.5.0
       - run: yarn deploy
