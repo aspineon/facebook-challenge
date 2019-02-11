@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/raulingg/facebook-challenge/compare/v1.2.2...v2.0.0) (2019-02-11)
+
+
+### Features
+
+* Add infite scrolldown to get more posts ([1048f34](https://github.com/raulingg/facebook-challenge/commit/1048f34)), closes [#7](https://github.com/raulingg/facebook-challenge/issues/7)
+
+
+### BREAKING CHANGES
+
+* Change folder structure, files names and implement custom reducers for posts
+collection.
+
 ## [1.2.2](https://github.com/raulingg/facebook-challenge/compare/v1.2.1...v1.2.2) (2019-02-10)
 
 
