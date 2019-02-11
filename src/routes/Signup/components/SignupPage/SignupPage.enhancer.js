@@ -31,13 +31,8 @@ export default compose(
       firebase
         .login({ provider: 'google', type: 'popup' })
         .catch(err => showError(err.message)),
-    signUpWithCredentials: ({ firebase, showError }) => creds =>
-      firebase
-        .createUser(creds, {
-          email: creds.email,
-          username: creds.username
-        })
-        .catch(err => showError(err.message))
+    signUpWithCredentials: ({ firebase, showError }) => (creds, rest) =>
+      firebase.createUser(creds, rest).catch(err => showError(err.message))
   }),
   // Add styles as props.classes
   withStyles(styles)

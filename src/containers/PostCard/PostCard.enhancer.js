@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import styles from './PostCard.styles'
 import {
   compose,
   setDisplayName,
@@ -7,17 +6,14 @@ import {
   withHandlers,
   setPropTypes
 } from 'recompose'
-import { withStyles } from '@material-ui/core/styles'
 import { withNotifications } from 'modules/notification'
+import { withStyles } from '@material-ui/core/styles'
+import styles from './PostCard.styles'
 
 export default compose(
-  setDisplayName('EnhancedPost'),
+  setDisplayName('EnhancedPostCard'),
   withNotifications,
   setPropTypes({
-    post: PropTypes.shape({
-      message: PropTypes.string.isRequired,
-      scope: PropTypes.string.isRequired
-    }),
     showSuccess: PropTypes.func.isRequired,
     showError: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired
@@ -35,9 +31,7 @@ export default compose(
     }
   ),
   withHandlers({
-    handleEnabledEditing: ({ setEditing }) => () => {
-      setEditing(true)
-    },
+    handleEnabledEditing: ({ setEditing }) => () => setEditing(true),
     handleDisabledEditing: ({ setEditing }) => () => setEditing(false),
     handleOpenDialog: ({ setDeleteDialogOpen }) => () =>
       setDeleteDialogOpen(true),

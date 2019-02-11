@@ -8,7 +8,7 @@
   <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
 </p>
 
-> **Marketplace for gamer-to-gamer trades of digital goods**
+> ** a clone from Facebook timeline **
 
 
 ## Table of Contents

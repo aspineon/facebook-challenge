@@ -28,15 +28,15 @@ const SignupForm = ({
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
       <TextField
-        id="username"
-        label="Username"
-        name="username"
-        autoComplete="username"
+        id="name"
+        label="name"
+        name="name"
+        autoComplete="name"
         onChange={handleChange}
         onBlur={handleBlur}
-        value={values.username}
-        error={touched.username && Boolean(errors.username)}
-        helperText={errors.username}
+        value={values.name}
+        error={touched.name && Boolean(errors.name)}
+        helperText={errors.name}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">

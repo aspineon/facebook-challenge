@@ -7,9 +7,12 @@ import { withFormik } from 'formik'
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object({
-  username: Yup.string('Ingrese un username')
-    .required('Username es requerido')
-    .matches(/^[A-Za-z0-9]+$/, 'Username solo caracteres alfanuméricos.'),
+  name: Yup.string('Ingrese un nombre')
+    .required('Nombre es requerido')
+    .matches(
+      /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s ]+$/,
+      'Nombre solo caracteres alfabéticos.'
+    ),
   email: Yup.string('Ingrese un email')
     .email('Ingrese un email válido')
     .required('Email es requerido'),
@@ -25,15 +28,15 @@ export default compose(
   }),
   withFormik({
     mapPropsToValues: () => ({
-      username: '',
+      name: '',
       email: '',
       password: '',
       showPassword: false
     }),
     // Custom sync validation
     validationSchema: validationSchema,
-    handleSubmit: (values, { setSubmitting, props }) => {
-      props.signUpWithCredentials(values)
+    handleSubmit: ({ email, password, name }, { setSubmitting, props }) => {
+      props.signUpWithCredentials({ email, password }, { displayName: name })
       setSubmitting(false)
     },
     displayName: SIGNUP_FORM_NAME

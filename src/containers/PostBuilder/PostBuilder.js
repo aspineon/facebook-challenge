@@ -17,13 +17,13 @@ const PostBuilder = ({
   handleBlur,
   handleSubmit,
   onClose,
-  photos,
+  photo,
   classes
 }) => (
   <form onSubmit={handleSubmit} className={classes.form}>
     <div
       className={
-        photos.length > 0 || (post && post.imageUrl)
+        photo || (post && post.imageUrl)
           ? classes.fieldsInverted
           : classes.fields
       }>
@@ -31,7 +31,7 @@ const PostBuilder = ({
         id="message"
         name="message"
         placeholder={
-          photos.length > 0 || (post && post.imageUrl)
+          photo || (post && post.imageUrl)
             ? 'Añade un comentario'
             : '¿Qué estás pensando ?'
         }
@@ -73,8 +73,9 @@ const PostBuilder = ({
 )
 
 PostBuilder.defaultProps = {
-  withImage: true,
-  post: undefined
+  post: null,
+  photo: null,
+  withImage: true
 }
 
 PostBuilder.proptypes = {

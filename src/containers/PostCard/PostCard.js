@@ -34,14 +34,16 @@ const PostCard = ({
     <CardHeader
       avatar={
         <Avatar
-          label={post.createdBy.displayName || post.createdBy.username}
+          label={post.publisher.displayName}
           className={classes.bigAvatar}
-          src={post.createdBy.avatarUrl || defaultUserImageUrl}
+          src={post.publisher.avatarUrl || defaultUserImageUrl}
         />
       }
-      title={post.createdBy.displayName || post.createdBy.username}
+      title={post.publisher.displayName}
       subheader={
-        (post.createdAt && post.createdAt.toDate().toLocaleString()) || ''
+        typeof post.createdAt === 'number'
+          ? new Date(post.createdAt).toLocaleString()
+          : post.createdAt.toDate().toLocaleString()
       }
     />
     {post.image && (
@@ -117,13 +119,23 @@ PostBuilder.defaultProps = {
 }
 
 PostCard.proptypes = {
+  post: PropTypes.shape({
+    id: PropTypes.string,
+    message: PropTypes.string,
+    scope: PropTypes.string,
+    image: PropTypes.object,
+    publisher: PropTypes.shape({
+      displayName: PropTypes.string.isRequired,
+      avatarUrl: PropTypes.string.isRequired
+    }).isRequired
+  }).isRequired,
+  handleDialogOk: PropTypes.func.isRequired,
   editing: PropTypes.bool.isRequired,
   deleting: PropTypes.bool.isRequired,
   deleteDialogOpen: PropTypes.bool.isRequired,
   handleEnabledEditing: PropTypes.func.isRequired,
   handleDisabledEditing: PropTypes.func.isRequired,
   handleOpenDialog: PropTypes.func.isRequired,
-  handleDialogOk: PropTypes.func.isRequired,
   handleDialogCancel: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired
 }

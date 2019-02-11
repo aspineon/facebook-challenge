@@ -3,10 +3,7 @@ export default theme => ({
     display: 'flex',
     flexDirection: 'column'
   },
-  section: {
+  post: {
     ...theme.flexRowCenter
-  },
-  title: {
-    marginBottom: '1.75rem'
   }
 })
