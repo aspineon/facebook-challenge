@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/raulingg/facebook-challenge/compare/v2.0.0...v2.1.0) (2019-02-11)
+
+
+### Features
+
+* Add friends filter to get posts ([1ebb44c](https://github.com/raulingg/facebook-challenge/commit/1ebb44c))
+
 # [2.0.0](https://github.com/raulingg/facebook-challenge/compare/v1.2.2...v2.0.0) (2019-02-11)
 
 
