@@ -8,8 +8,9 @@
   <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"></a>
 </p>
 
-> ** a clone from Facebook timeline **
+> **a clone from Facebook timeline**
 
+<p align="center"><a href="https://facebook-challenge-6053b.firebaseapp.com/">Live Demo</a></p>
 
 ## Table of Contents
 
