@@ -7,7 +7,7 @@ module.exports = {
     [
       '@semantic-release/github',
       {
-        assets: ['build/**']
+        assets: ['build']
       }
     ],
     '@semantic-release/git'

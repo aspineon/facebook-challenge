@@ -48,6 +48,10 @@ export const getPostsFirestore = (
     const querySnap = await firestore.get(options)
 
     if (querySnap.docs.length === 0) {
+      if (!queryParams.lastPostId) {
+        dispatch(loadPost([]))
+      }
+
       return querySnap
     }
 
@@ -123,6 +127,10 @@ export const addPostFireStore = (newInstance = null, image = null) => async (
       updatedAt: firestore.FieldValue.serverTimestamp()
     }
 
+    if (data.scope === 'FRIENDS') {
+      data.friends = userProfile.friends
+    }
+
     const newPost = await firestore.add(
       { collection: queryConfig.collection },
       data
@@ -148,10 +156,17 @@ export const addPostFireStore = (newInstance = null, image = null) => async (
 export const updatePostFireStore = (id, updates) => async (
   dispatch,
   getState,
-  { getFirestore }
+  { getFirestore, getFirebase }
 ) => {
   if (!id) {
     throw new Error('Post Id not supply')
+  }
+
+  const firebase = getFirebase()
+  const user = firebase.auth().currentUser
+
+  if (!user || !user.uid) {
+    throw new Error('Debes ingresar a tu cuenta antes de crear una oferta')
   }
 
   const firestore = getFirestore()
@@ -160,6 +175,12 @@ export const updatePostFireStore = (id, updates) => async (
     const data = {
       ...updates,
       updatedAt: firestore.FieldValue.serverTimestamp()
+    }
+
+    if (data.scope === 'FRIENDS') {
+      data.friends = getState().firebase.profile.friends
+    } else {
+      data.friends = []
     }
 
     await firestore.update(
@@ -176,10 +197,17 @@ export const updatePostFireStore = (id, updates) => async (
 export const deletePostFireStore = id => async (
   dispatch,
   getState,
-  { getFirestore }
+  { getFirestore, getFirebase }
 ) => {
   if (!id) {
     throw new Error('Post Id not supply')
+  }
+
+  const firebase = getFirebase()
+  const user = firebase.auth().currentUser
+
+  if (!user || !user.uid) {
+    throw new Error('Debes ingresar a tu cuenta antes de crear una oferta')
   }
 
   const firestore = getFirestore()

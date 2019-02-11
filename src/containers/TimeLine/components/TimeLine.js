@@ -40,7 +40,7 @@ const TimeLine = ({
 
 TimeLine.defaultProps = {
   withFilters: true,
-  filter: null
+  filter: 'PUBLIC'
 }
 
 TimeLine.proptypes = {
