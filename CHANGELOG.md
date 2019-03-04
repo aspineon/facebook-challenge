@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/raulingg/facebook-challenge/compare/v2.1.0...v2.2.0) (2019-03-04)
+
+
+### Features
+
+* Enable service worker and firebase persistencie for offline mode. ([7a77adb](https://github.com/raulingg/facebook-challenge/commit/7a77adb))
+
 # [2.1.0](https://github.com/raulingg/facebook-challenge/compare/v2.0.0...v2.1.0) (2019-02-11)
 
 
