@@ -1,6 +1,7 @@
 **/coverage/**
 **/node_modules/**
 **/__snapshots__/**
+build/**
 dist/**
 src/index.html
 blueprints/**

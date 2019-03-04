@@ -12,7 +12,7 @@ function updateUserProfileWithToken(messagingToken) {
   const currentUserUid =
     firebase.auth().currentUser && firebase.auth().currentUser.uid
   if (!currentUserUid) {
-    return
+    return messagingToken
   }
   return firebase
     .firestore()
@@ -57,7 +57,7 @@ export function requestPermission() {
     .requestPermission()
     .then(getTokenAndWriteToProfile)
     .catch(err => {
-      console.error('Unable to get permission to notify: ', err) // eslint-disable-line no-console
+      console.error('Unable to get permission to notify: ', err.message || err) // eslint-disable-line no-console
       return Promise.reject(err)
     })
 }

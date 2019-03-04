@@ -60,6 +60,7 @@ export default (initialState = {}) => {
   // ======================================================
   firebase.initializeApp(fbConfig)
   firebase.firestore().settings({ timestampsInSnapshots: true })
+  firebase.firestore().enablePersistence() // eslint-disable-line no-console
 
   // ======================================================
   // Store Instantiation and HMR Setup

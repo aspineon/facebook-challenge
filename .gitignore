@@ -18,3 +18,4 @@ functions/dist
 functions/.runtimeconfig.json
 functions/coverage
 .vscode
+.firebase
